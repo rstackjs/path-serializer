@@ -6,8 +6,8 @@ import {
   normalizeCodeToPosix,
   normalizePathToPosix,
 } from './normalize';
+import { replacePnpmInnerPath } from './pnpm';
 import type { PathMatcher, SnapshotSerializerOptions } from './types';
-import { replacePnpmInnerPath } from './utils';
 
 export interface SnapshotSerializer {
   serialize: (val: any) => string;
