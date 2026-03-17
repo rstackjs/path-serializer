@@ -1,7 +1,7 @@
 import path from 'node:path';
+import { createSnapshotSerializer } from 'path-serializer';
 import { expect } from 'vitest';
 import { test } from 'vitest';
-import { createSnapshotSerializer } from 'path-serializer';
 
 expect.addSnapshotSerializer(
   createSnapshotSerializer({
@@ -20,7 +20,7 @@ const a = "${require.resolve('@rslib/core')}";
 
   expect(fileContent).toMatchInlineSnapshot(`
     "use strict";
-    const a = "<ROOT>/node_modules/<PNPM_INNER>/@rslib/core/dist/index.js";
+    const a = "<HOME>/Library/<PNPM_INNER>/@rslib/core/dist/index.js";
   `);
 });
 
