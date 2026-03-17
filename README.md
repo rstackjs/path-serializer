@@ -177,6 +177,7 @@ Built-in features are applied in this order:
 - [Rslib](https://github.com/web-infra-dev/rslib/blob/3ff6859eb38171c731e447a1364afc021f8c501a/tests/setupVitestTests.ts)
 - [Rsbuild](https://github.com/web-infra-dev/rsbuild/blob/a50eafa3519caaa66ecd6b0ccb2897a8194781ff/scripts/test-helper/vitest.setup.ts)
 - [Rspack](https://github.com/web-infra-dev/rspack/blob/5a6162c/packages/rspack-test-tools/src/helper/expect/placeholder.ts)
+- [Rspress](https://github.com/web-infra-dev/rspress/blob/8d620050cc2590954838e201d39c10744b6d1bac/scripts/test-helper/rstest.setup.ts)
 
 ## License
 
