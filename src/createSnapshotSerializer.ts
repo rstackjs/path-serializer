@@ -106,6 +106,14 @@ export function createSnapshotSerializer(
 
       replaced = applyMatcherReplacement(pathMatchers, replaced);
 
+      if (replacePnpmInner) {
+        // Strip environment-dependent prefix before <PNPM_INNER> so that
+        // local virtual store  (<ROOT>/node_modules/<PNPM_INNER>/pkg/...)
+        // and global virtual store (<HOME>/Library/<PNPM_INNER>/pkg/...)
+        // both normalize to just <PNPM_INNER>/pkg/...
+        replaced = replaced.replace(/[^\s!"']*<PNPM_INNER>/g, '<PNPM_INNER>');
+      }
+
       if (transformCLR) {
         replaced = normalizeCLR(replaced);
       }

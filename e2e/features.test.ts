@@ -20,7 +20,7 @@ const a = "${require.resolve('@rslib/core')}";
 
   expect(fileContent).toMatchInlineSnapshot(`
     "use strict";
-    const a = "<HOME>/Library/<PNPM_INNER>/@rslib/core/dist/index.js";
+    const a = "<PNPM_INNER>/@rslib/core/dist/index.js";
   `);
 });
 
@@ -34,7 +34,7 @@ function _class_private_method_get(receiver, privateSet, fn) {
 `;
 
   expect(fileContent).toMatchInlineSnapshot(`
-    ;// CONCATENATED MODULE: ../../../../node_modules/<PNPM_INNER>/@swc/helpers/esm/_class_private_method_get.js
+    ;// CONCATENATED MODULE: <PNPM_INNER>/@swc/helpers/esm/_class_private_method_get.js
     function _class_private_method_get(receiver, privateSet, fn) {
         if (!privateSet.has(receiver)) throw new TypeError("attempted to get private field on non-instance");
 
