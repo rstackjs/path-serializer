@@ -76,7 +76,7 @@ expect.addSnapshotSerializer(
     root: path.join(__dirname, '..'),
     replace: [
       { match: /port\s\d+/, mark: 'PORT' },
-      { match: '/specific/path', mark: '<CUSTOM>' },
+      { match: '/specific/path', mark: 'CUSTOM' },
     ],
   }),
 );
