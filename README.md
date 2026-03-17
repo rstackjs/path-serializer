@@ -155,6 +155,8 @@ Toggle individual features (all enabled by default):
 | `escapeEOL` | `true` | Normalize `\r\n` to `\n` |
 | `addDoubleQuotes` | `true` | Wrap output in double quotes |
 
+More details can be found in [./src/types.ts](https://github.com/rspack-contrib/path-serializer/blob/main/src/types.ts).
+
 ## Showcases
 
 - [Rslib](https://github.com/web-infra-dev/rslib/blob/3ff6859eb38171c731e447a1364afc021f8c501a/tests/setupVitestTests.ts)
