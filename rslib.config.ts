@@ -1,4 +1,5 @@
 import { defineConfig } from '@rslib/core';
+import { pluginPublint } from 'rsbuild-plugin-publint';
 
 export default defineConfig({
   lib: [
@@ -33,4 +34,5 @@ export default defineConfig({
   output: {
     target: 'node',
   },
+  plugins: [pluginPublint()],
 });
