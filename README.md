@@ -75,7 +75,7 @@ expect.addSnapshotSerializer(
   createSnapshotSerializer({
     root: path.join(__dirname, '..'),
     replace: [
-      { match: /port\s\d+/, mark: 'port <PORT>' },
+      { match: /port\s\d+/, mark: 'PORT' },
       { match: '/specific/path', mark: '<CUSTOM>' },
     ],
   }),
@@ -154,23 +154,6 @@ Toggle individual features (all enabled by default):
 | `escapeDoubleQuotes` | `true` | Escape `"` to `\"` |
 | `escapeEOL` | `true` | Normalize `\r\n` to `\n` |
 | `addDoubleQuotes` | `true` | Wrap output in double quotes |
-
-## Processing Pipeline
-
-```
-beforeSerialize → replace → [built-in features] → replacePost → afterSerialize
-```
-
-Built-in features are applied in this order:
-
-1. `replaceWorkspaceWithFileProtocol`
-2. `replaceRootWithFileProtocol`
-3. `transformWin32Path`
-4. `replaceWorkspace` / `replaceRoot` / `replacePnpmInner` / `replaceTmpDir` / `replaceHomeDir`
-5. `transformCLR`
-6. `escapeDoubleQuotes`
-7. `escapeEOL`
-8. `addDoubleQuotes`
 
 ## Showcases
 
