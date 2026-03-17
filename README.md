@@ -4,7 +4,7 @@
 
 A snapshot serializer that normalizes system-specific paths into stable, readable placeholders — designed for Vitest, Jest, and Rstest.
 
-- Stabilize pnpm dependencies path in snapshot
+- Stabilize pnpm dependencies path in snapshot (including `enableGlobalVirtualStore`)
 - Transform win32 path to posix path
 - Replace absolute paths with placeholders (`<ROOT>`, `<WORKSPACE>`, `<HOME>`, `<TEMP>`)
 - Handle `file://` protocol URLs
@@ -23,6 +23,20 @@ A snapshot serializer that normalizes system-specific paths into stable, readabl
 {
   "loader" : "<ROOT>/node_modules/<PNPM_INNER>/css-loader/utils.ts"
 }
+```
+
+`replacePnpmInner` also supports pnpm's global virtual store layout. When
+[`enableGlobalVirtualStore`](https://pnpm.io/npmrc#enableglobalvirtualstore) is
+enabled (or `.npmrc` contains `enable-global-virtual-store=true`), paths like:
+
+```text
+<ROOT>/node_modules/../../../../../../Library/pnpm/store/v10/links/react/19.2.4/<hash>/node_modules/react/index.js
+```
+
+are normalized to:
+
+```text
+<PNPM_INNER>/react/index.js
 ```
 
 ## Installation
@@ -147,7 +161,7 @@ Toggle individual features (all enabled by default):
 | `replaceRoot` | `true` | `/foo/node_modules/.pnpm` → `<ROOT>/node_modules/.pnpm` |
 | `replaceWorkspaceWithFileProtocol` | `true` | `file:///foo/packages/core/src` → `<WORKSPACE>/src` |
 | `replaceRootWithFileProtocol` | `true` | `file:///foo/node_modules/.pnpm` → `<ROOT>/node_modules/.pnpm` |
-| `replacePnpmInner` | `true` | Collapse pnpm's long `.pnpm/...` paths to `<PNPM_INNER>` |
+| `replacePnpmInner` | `true` | Collapse pnpm's long `.pnpm/...` and global virtual store `pnpm/store/.../links/...` paths to `<PNPM_INNER>` |
 | `replaceTmpDir` | `true` | `os.tmpdir()` paths → `<TEMP>` |
 | `replaceHomeDir` | `true` | `os.homedir()` paths → `<HOME>` |
 | `transformWin32Path` | `true` | Convert `D:\\foo\\bar` to `/d/foo/bar` |
