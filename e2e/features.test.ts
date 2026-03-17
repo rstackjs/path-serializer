@@ -1,6 +1,5 @@
 import path from 'node:path';
-import { expect } from '@rstest/core';
-import { test } from '@rstest/core';
+import { expect, test } from '@rstest/core';
 import { createSnapshotSerializer } from 'path-serializer';
 
 expect.addSnapshotSerializer(
