@@ -1,17 +1,13 @@
 import { pathToFileURL } from 'node:url';
 import { applyMatcherReplacement } from './applyMatcherReplacement';
-import {
-  createHomeDirMatchers,
-  createPnpmInnerMatchers,
-  createTmpDirMatchers,
-} from './matchers';
+import { createHomeDirMatchers, createTmpDirMatchers } from './matchers';
 import {
   normalizeCLR,
   normalizeCodeToPosix,
   normalizePathToPosix,
 } from './normalize';
 import type { PathMatcher, SnapshotSerializerOptions } from './types';
-import { stripPnpmInnerPrefix } from './utils';
+import { replacePnpmInnerPath } from './utils';
 
 export interface SnapshotSerializer {
   serialize: (val: any) => string;
@@ -54,9 +50,6 @@ export function createSnapshotSerializer(
     }
     if (replaceRoot && root) {
       pathMatchers.push({ mark: 'root', match: root });
-    }
-    if (replacePnpmInner) {
-      pathMatchers.push(...createPnpmInnerMatchers());
     }
     if (replaceTmpDir) {
       pathMatchers.push(...createTmpDirMatchers());
@@ -108,11 +101,7 @@ export function createSnapshotSerializer(
       replaced = applyMatcherReplacement(pathMatchers, replaced);
 
       if (replacePnpmInner) {
-        // Strip environment-dependent prefix before <PNPM_INNER> so that
-        // local virtual store  (<ROOT>/node_modules/<PNPM_INNER>/pkg/...)
-        // and global virtual store (<HOME>/Library/<PNPM_INNER>/pkg/...)
-        // both normalize to just <PNPM_INNER>/pkg/...
-        replaced = stripPnpmInnerPrefix(replaced);
+        replaced = replacePnpmInnerPath(replaced);
       }
 
       if (transformCLR) {
