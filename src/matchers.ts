@@ -21,14 +21,25 @@ export const createHomeDirMatchers = (): PathMatcher[] => {
 
 export const createPnpmInnerMatchers = (): PathMatcher[] => {
   return [
-    // posix
+    // local virtual store - posix
     {
       match: /(?<=\/)(\.pnpm\/.+?\/node_modules)(?=\/)/g,
       mark: 'pnpmInner',
     },
-    // win32
+    // local virtual store - win32
     {
       match: /(?<=\\)(\.pnpm\\.+?\\node_modules)(?=\\)/g,
+      mark: 'pnpmInner',
+    },
+    // global virtual store - posix
+    // e.g. Library/pnpm/store/v10/links/react/19.2.4/<hash>/node_modules
+    {
+      match: /(?<=\/)pnpm\/store\/[^/]+\/links\/.+?\/node_modules(?=\/)/g,
+      mark: 'pnpmInner',
+    },
+    // global virtual store - win32
+    {
+      match: /(?<=\\)pnpm\\store\\[^\\]+\\links\\.+?\\node_modules(?=\\)/g,
       mark: 'pnpmInner',
     },
   ];
