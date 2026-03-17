@@ -166,9 +166,9 @@ describe('normalizeCLR', () => {
       },
     ];
 
-    testCases.forEach(({ input, expected }) => {
+    for (const { input, expected } of testCases) {
       expect(normalizeCLR(input)).toMatch(expected);
-    });
+    }
   });
 
   test('should not replace non-time number patterns', () => {
@@ -195,8 +195,8 @@ describe('normalizeCLR', () => {
       },
     ];
 
-    testCases.forEach(({ input, expected }) => {
+    for (const { input, expected } of testCases) {
       expect(normalizeCLR(input)).toBe(expected);
-    });
+    }
   });
 });
