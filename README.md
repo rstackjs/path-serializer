@@ -21,22 +21,8 @@ A snapshot serializer that normalizes system-specific paths into stable, readabl
 
 // 😎 With path-serializer — stable, cross-platform, clean
 {
-  "loader" : "<ROOT>/node_modules/<PNPM_INNER>/css-loader/utils.ts"
+  "loader" : "<PNPM_INNER>/css-loader/utils.ts"
 }
-```
-
-`replacePnpmInner` also supports pnpm's global virtual store layout. When
-[`enableGlobalVirtualStore`](https://pnpm.io/npmrc#enableglobalvirtualstore) is
-enabled (or `.npmrc` contains `enable-global-virtual-store=true`), paths like:
-
-```text
-<ROOT>/node_modules/../../../../../../Library/pnpm/store/v10/links/react/19.2.4/<hash>/node_modules/react/index.js
-```
-
-are normalized to:
-
-```text
-<PNPM_INNER>/react/index.js
 ```
 
 ## Installation
@@ -78,6 +64,7 @@ expect.addSnapshotSerializer(
 ```
 
 This replaces:
+
 - Workspace paths → `<WORKSPACE>/...`
 - Root paths → `<ROOT>/...`
 
