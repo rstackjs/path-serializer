@@ -1,7 +1,6 @@
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
-import { expect } from 'vitest';
-import { test } from 'vitest';
+import { expect, test } from '@rstest/core';
 import { createSnapshotSerializer } from 'path-serializer';
 
 test('should escapeEOL', async () => {
