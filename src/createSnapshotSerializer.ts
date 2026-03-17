@@ -11,6 +11,7 @@ import {
   normalizePathToPosix,
 } from './normalize';
 import type { PathMatcher, SnapshotSerializerOptions } from './types';
+import { stripPnpmInnerPrefix } from './utils';
 
 export interface SnapshotSerializer {
   serialize: (val: any) => string;
@@ -111,7 +112,7 @@ export function createSnapshotSerializer(
         // local virtual store  (<ROOT>/node_modules/<PNPM_INNER>/pkg/...)
         // and global virtual store (<HOME>/Library/<PNPM_INNER>/pkg/...)
         // both normalize to just <PNPM_INNER>/pkg/...
-        replaced = replaced.replace(/[^\s!"']*<PNPM_INNER>/g, '<PNPM_INNER>');
+        replaced = stripPnpmInnerPrefix(replaced);
       }
 
       if (transformCLR) {
