@@ -42,6 +42,7 @@ pnpm add path-serializer -D
 ```typescript
 // vitest.setup.ts
 import path from 'node:path';
+import { expect } from 'vitest';
 import { createSnapshotSerializer } from 'path-serializer';
 
 expect.addSnapshotSerializer(
