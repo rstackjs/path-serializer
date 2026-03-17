@@ -1,15 +1,12 @@
 import { pathToFileURL } from 'node:url';
 import { applyMatcherReplacement } from './applyMatcherReplacement';
-import {
-  createHomeDirMatchers,
-  createPnpmInnerMatchers,
-  createTmpDirMatchers,
-} from './matchers';
+import { createHomeDirMatchers, createTmpDirMatchers } from './matchers';
 import {
   normalizeCLR,
   normalizeCodeToPosix,
   normalizePathToPosix,
 } from './normalize';
+import { replacePnpmInnerPath } from './pnpm';
 import type { PathMatcher, SnapshotSerializerOptions } from './types';
 
 export interface SnapshotSerializer {
@@ -53,9 +50,6 @@ export function createSnapshotSerializer(
     }
     if (replaceRoot && root) {
       pathMatchers.push({ mark: 'root', match: root });
-    }
-    if (replacePnpmInner) {
-      pathMatchers.push(...createPnpmInnerMatchers());
     }
     if (replaceTmpDir) {
       pathMatchers.push(...createTmpDirMatchers());
@@ -105,6 +99,10 @@ export function createSnapshotSerializer(
       }
 
       replaced = applyMatcherReplacement(pathMatchers, replaced);
+
+      if (replacePnpmInner) {
+        replaced = replacePnpmInnerPath(replaced);
+      }
 
       if (transformCLR) {
         replaced = normalizeCLR(replaced);

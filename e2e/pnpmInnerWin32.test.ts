@@ -1,5 +1,5 @@
-import { expect, test } from 'vitest';
 import { createSnapshotSerializer } from 'path-serializer';
+import { expect, test } from 'vitest';
 
 expect.addSnapshotSerializer(
   createSnapshotSerializer({
@@ -21,7 +21,7 @@ test('should serialize <PNPM_INNER> in win32', () => {
 
   expect(fileContent).toMatchInlineSnapshot(`
     {
-      loader: <ROOT>/node_modules/<PNPM_INNER>/css-loader/utils.ts,
+      loader: <PNPM_INNER>/css-loader/utils.ts,
     }
   `);
 });
@@ -34,7 +34,7 @@ test('should serialize <PNPM_INNER> with webpack path', () => {
 
   expect(fileContent).toMatchInlineSnapshot(`
     {
-      moduleIdentifier: <ROOT>/node_modules/<PNPM_INNER>/css-loader/dist/cjs.js!<WORKSPACE>/tests/fixtures/css/style.css,
+      moduleIdentifier: <PNPM_INNER>/css-loader/dist/cjs.js!<WORKSPACE>/tests/fixtures/css/style.css,
     }
   `);
 });

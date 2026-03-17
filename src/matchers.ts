@@ -18,18 +18,3 @@ export const createHomeDirMatchers = (): PathMatcher[] => {
   homedir && ret.push({ match: homedir, mark: 'home' });
   return ret;
 };
-
-export const createPnpmInnerMatchers = (): PathMatcher[] => {
-  return [
-    // posix
-    {
-      match: /(?<=\/)(\.pnpm\/.+?\/node_modules)(?=\/)/g,
-      mark: 'pnpmInner',
-    },
-    // win32
-    {
-      match: /(?<=\\)(\.pnpm\\.+?\\node_modules)(?=\\)/g,
-      mark: 'pnpmInner',
-    },
-  ];
-};

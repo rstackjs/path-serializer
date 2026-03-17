@@ -1,0 +1,1 @@
+export { replacePnpmInnerPath } from './replacePnpmInnerPath';
