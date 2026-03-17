@@ -1,8 +1,8 @@
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test } from '@rstest/core';
 import {
+  normalizeCLR,
   normalizeCodeToPosix,
   normalizePathToPosix,
-  normalizeCLR,
 } from './normalize';
 
 describe('normalizePathToPosix', () => {

@@ -1,7 +1,7 @@
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
+import { expect, test } from '@rstest/core';
 import { createSnapshotSerializer } from 'path-serializer';
-import { expect, test } from 'vitest';
 
 test('should work with __dirname', () => {
   expect.addSnapshotSerializer(
