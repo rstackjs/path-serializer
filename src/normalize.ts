@@ -4,7 +4,10 @@ import upath from 'upath';
 export const normalizePathToPosix = (p: string | undefined): string => {
   return upath
     .normalizeSafe(path.normalize(p || ''))
-    .replace(/^([a-zA-Z]+):/, (_: any, m: string) => `/${m.toLowerCase()}`);
+    .replace(
+      /^([a-zA-Z]+):/,
+      (_match: string, m: string) => `/${m.toLowerCase()}`,
+    );
 };
 
 // find the path in code and replace it with normalizePathToPosix

@@ -5,16 +5,22 @@ import { getRealTemporaryDirectory } from './utils';
 export const createTmpDirMatchers = (): PathMatcher[] => {
   const ret: PathMatcher[] = [];
   const realTmpDir = getRealTemporaryDirectory();
-  realTmpDir && ret.push({ match: realTmpDir, mark: 'temp' });
+  if (realTmpDir) {
+    ret.push({ match: realTmpDir, mark: 'temp' });
+  }
 
   const tmpDir = os.tmpdir();
-  tmpDir && ret.push({ match: tmpDir, mark: 'temp' });
+  if (tmpDir) {
+    ret.push({ match: tmpDir, mark: 'temp' });
+  }
   return ret;
 };
 
 export const createHomeDirMatchers = (): PathMatcher[] => {
   const ret: PathMatcher[] = [];
   const homedir = os.homedir();
-  homedir && ret.push({ match: homedir, mark: 'home' });
+  if (homedir) {
+    ret.push({ match: homedir, mark: 'home' });
+  }
   return ret;
 };
