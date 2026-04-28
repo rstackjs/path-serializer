@@ -3,12 +3,11 @@ import os from 'node:os';
 import { escapeRegExp } from 'lodash-es';
 
 export function getRealTemporaryDirectory(): string | null {
-  let ret: string | null = null;
   try {
-    ret = os.tmpdir();
-    ret = fs.realpathSync(ret);
-  } catch {}
-  return ret;
+    return fs.realpathSync(os.tmpdir());
+  } catch {
+    return null;
+  }
 }
 
 /**

@@ -142,20 +142,20 @@ Transform the final string after all replacements.
 
 Toggle individual features (all enabled by default):
 
-| Feature | Default | Description |
-|---|---|---|
-| `replaceWorkspace` | `true` | `/foo/packages/core/src` → `<WORKSPACE>/src` |
-| `replaceRoot` | `true` | `/foo/node_modules/.pnpm` → `<ROOT>/node_modules/.pnpm` |
-| `replaceWorkspaceWithFileProtocol` | `true` | `file:///foo/packages/core/src` → `<WORKSPACE>/src` |
-| `replaceRootWithFileProtocol` | `true` | `file:///foo/node_modules/.pnpm` → `<ROOT>/node_modules/.pnpm` |
-| `replacePnpmInner` | `true` | Collapse pnpm's long `.pnpm/...` and global virtual store `pnpm/store/.../links/...` paths to `<PNPM_INNER>` |
-| `replaceTmpDir` | `true` | `os.tmpdir()` paths → `<TEMP>` |
-| `replaceHomeDir` | `true` | `os.homedir()` paths → `<HOME>` |
-| `transformWin32Path` | `true` | Convert `D:\\foo\\bar` to `/d/foo/bar` |
-| `transformCLR` | `true` | Normalize ANSI color escape codes |
-| `escapeDoubleQuotes` | `true` | Escape `"` to `\"` |
-| `escapeEOL` | `true` | Normalize `\r\n` to `\n` |
-| `addDoubleQuotes` | `true` | Wrap output in double quotes |
+| Feature                            | Default | Description                                                                                                  |
+| ---------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------ |
+| `replaceWorkspace`                 | `true`  | `/foo/packages/core/src` → `<WORKSPACE>/src`                                                                 |
+| `replaceRoot`                      | `true`  | `/foo/node_modules/.pnpm` → `<ROOT>/node_modules/.pnpm`                                                      |
+| `replaceWorkspaceWithFileProtocol` | `true`  | `file:///foo/packages/core/src` → `<WORKSPACE>/src`                                                          |
+| `replaceRootWithFileProtocol`      | `true`  | `file:///foo/node_modules/.pnpm` → `<ROOT>/node_modules/.pnpm`                                               |
+| `replacePnpmInner`                 | `true`  | Collapse pnpm's long `.pnpm/...` and global virtual store `pnpm/store/.../links/...` paths to `<PNPM_INNER>` |
+| `replaceTmpDir`                    | `true`  | `os.tmpdir()` paths → `<TEMP>`                                                                               |
+| `replaceHomeDir`                   | `true`  | `os.homedir()` paths → `<HOME>`                                                                              |
+| `transformWin32Path`               | `true`  | Convert `D:\\foo\\bar` to `/d/foo/bar`                                                                       |
+| `transformCLR`                     | `true`  | Normalize ANSI color escape codes                                                                            |
+| `escapeDoubleQuotes`               | `true`  | Escape `"` to `\"`                                                                                           |
+| `escapeEOL`                        | `true`  | Normalize `\r\n` to `\n`                                                                                     |
+| `addDoubleQuotes`                  | `true`  | Wrap output in double quotes                                                                                 |
 
 More details can be found in [./src/types.ts](https://github.com/rspack-contrib/path-serializer/blob/main/src/types.ts).
 
