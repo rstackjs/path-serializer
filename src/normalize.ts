@@ -15,7 +15,7 @@ export const normalizeCodeToPosix = (code: string): string => {
   return code.replace(
     // windows absolute path
     // ignore http, https, file
-    /(?<![a-zA-Z])([a-zA-Z]:[\\/]+)([-\u4e00-\u9fa5\w\s.()~!@#$%^&()\[\]{}+=]+[\\/]+)*/g,
+    /(?<![a-zA-Z])([a-zA-Z]:[\\/]+)([-\u4e00-\u9fa5\w\s.()~!@#$%^&()[\]{}+=]+[\\/]+)*/g,
     (match: string, _diskName: string) => {
       return normalizePathToPosix(match.replace(/[\\]{2,}/g, '\\'));
     },

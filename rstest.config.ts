@@ -1,4 +1,3 @@
-import { fileURLToPath } from 'node:url';
 import { withRslibConfig } from '@rstest/adapter-rslib';
 import { defineConfig } from '@rstest/core';
 

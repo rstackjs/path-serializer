@@ -4,7 +4,7 @@ export default defineConfig([
   ts.configs.recommended,
   {
     rules: {
-      '@typescript-eslint/no-explicit-any': 'off',
+      'no-control-regex': 'off',
     },
   },
 ]);

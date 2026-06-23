@@ -5,8 +5,10 @@ export default defineConfig({
   lib: [
     {
       format: 'esm',
+      syntax: 'es2023',
       dts: {
         bundle: true,
+        tsgo: true,
       },
       output: {
         distPath: {
@@ -16,8 +18,10 @@ export default defineConfig({
     },
     {
       format: 'cjs',
+      syntax: 'es2023',
       dts: {
         bundle: true,
+        tsgo: true,
       },
       output: {
         distPath: {
