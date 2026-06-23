@@ -1,10 +1,3 @@
 import { defineConfig, ts } from '@rslint/core';
 
-export default defineConfig([
-  ts.configs.recommended,
-  {
-    rules: {
-      '@typescript-eslint/no-explicit-any': 'off',
-    },
-  },
-]);
+export default defineConfig([ts.configs.recommended]);

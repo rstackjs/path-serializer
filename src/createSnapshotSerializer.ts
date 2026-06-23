@@ -10,8 +10,8 @@ import { replacePnpmInnerPath } from './pnpm';
 import type { PathMatcher, SnapshotSerializerOptions } from './types';
 
 export interface SnapshotSerializer {
-  serialize: (val: any) => string;
-  test: (arg0: any) => boolean;
+  serialize: (val: unknown) => string;
+  test: (arg0: unknown) => boolean;
 }
 
 export function createSnapshotSerializer(

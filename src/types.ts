@@ -1,8 +1,8 @@
-export type PathMatchExpression = string | RegExp;
+type PathMatchExpression = string | RegExp;
 
 export interface PathMatcher {
   match: PathMatchExpression;
-  mark: string | ((substring: string, ...args: any[]) => string);
+  mark: string | ((substring: string, ...args: unknown[]) => string);
 }
 
 export interface Features {

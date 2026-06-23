@@ -2,13 +2,13 @@ import { snakeCase } from 'lodash-es';
 import type { ApplyPathMatcherOptions, PathMatcher } from './types';
 import { compilePathMatcherRegExp, splitPathString } from './utils';
 
-export function applyPathMatcher(
+function applyPathMatcher(
   matcher: PathMatcher,
   str: string,
   options: ApplyPathMatcherOptions = {},
 ): string {
   const regex = compilePathMatcherRegExp(matcher.match);
-  const replacer = (substring: string, ...args: any[]): string => {
+  const replacer = (substring: string, ...args: unknown[]): string => {
     if (
       options.minPartials &&
       splitPathString(substring).length < options.minPartials

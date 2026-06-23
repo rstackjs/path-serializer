@@ -15,20 +15,32 @@ export const normalizeCodeToPosix = (code: string): string => {
   return code.replace(
     // windows absolute path
     // ignore http, https, file
-    /(?<![a-zA-Z])([a-zA-Z]:[\\/]+)([-\u4e00-\u9fa5\w\s.()~!@#$%^&()\[\]{}+=]+[\\/]+)*/g,
+    /(?<![a-zA-Z])([a-zA-Z]:[\\/]+)([-\u4e00-\u9fa5\w\s.()~!@#$%^&()[\]{}+=]+[\\/]+)*/g,
     (match: string, _diskName: string) => {
       return normalizePathToPosix(match.replace(/[\\]{2,}/g, '\\'));
     },
   );
 };
 
+const ANSI_ESCAPE = String.raw`\u001b`;
+const ANSI_BOLD_COLOR_REGEXP = new RegExp(
+  `${ANSI_ESCAPE}\\[1m${ANSI_ESCAPE}\\[([0-9;]*)m`,
+  'g',
+);
+const ANSI_BOLD_REGEXP = new RegExp(`${ANSI_ESCAPE}\\[1m`, 'g');
+const ANSI_RESET_REGEXP = new RegExp(
+  `${ANSI_ESCAPE}\\[39m${ANSI_ESCAPE}\\[22m`,
+  'g',
+);
+const ANSI_COLOR_REGEXP = new RegExp(`${ANSI_ESCAPE}\\[([0-9;]*)m`, 'g');
+
 export const normalizeCLR = (str: string): string => {
   return (
     str
-      .replace(/\u001b\[1m\u001b\[([0-9;]*)m/g, '<CLR=$1,BOLD>')
-      .replace(/\u001b\[1m/g, '<CLR=BOLD>')
-      .replace(/\u001b\[39m\u001b\[22m/g, '</CLR>')
-      .replace(/\u001b\[([0-9;]*)m/g, '<CLR=$1>')
+      .replace(ANSI_BOLD_COLOR_REGEXP, '<CLR=$1,BOLD>')
+      .replace(ANSI_BOLD_REGEXP, '<CLR=BOLD>')
+      .replace(ANSI_RESET_REGEXP, '</CLR>')
+      .replace(ANSI_COLOR_REGEXP, '<CLR=$1>')
       // CHANGE: The time unit display in Rspack is second
       // CHANGE2: avoid a bad case "./react/assets.svg" -> "./react/assetsXsvg"
       // modified based on https://github.com/webpack/webpack/blob/001cab14692eb9a833c6b56709edbab547e291a1/test/StatsTestCases.basictest.js#L199
