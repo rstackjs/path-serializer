@@ -4,9 +4,8 @@ const PNPM_INNER_DELIMITERS = /[\s!"']/;
 // local virtual store: .pnpm/<pkg>@<ver>/node_modules
 const LOCAL_PNPM_POSIX = /(?<=\/)(\.pnpm\/.+?\/node_modules)(?=\/)/g;
 const LOCAL_PNPM_WIN32 = /(?<=\\)(\.pnpm\\.+?\\node_modules)(?=\\)/g;
-// global virtual store: pnpm/store/<versions>/links/<pkg>/<ver>/<hash>/node_modules
-const GLOBAL_PNPM_POSIX =
-  /(?<=\/)pnpm\/store\/.+?\/links\/.+?\/node_modules(?=\/)/g;
+// global virtual store: <store-dir>/v<version>/links/<pkg>/<ver>/<hash>/node_modules
+const GLOBAL_PNPM_POSIX = /(?<=\/)v\d+\/links\/.+?\/node_modules(?=\/)/g;
 
 /**
  * Replace pnpm virtual store paths with `<PNPM_INNER>` and strip

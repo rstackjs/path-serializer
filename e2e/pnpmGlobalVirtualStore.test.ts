@@ -32,6 +32,15 @@ test('should serialize pnpm global virtual store path with scoped package', () =
   );
 });
 
+test('should serialize pnpm global virtual store path with custom store dir (posix)', () => {
+  const filePath =
+    '/Users/runner/setup-pnpm/node_modules/.bin/store/v11/links/@/babel-loader/10.1.1/2e0a48b2c431adf706e0ceeb7230f336ebd327dd1253fa61217daa3dbb5c78dc/node_modules/babel-loader/lib/index.js';
+
+  expect(filePath).toMatchInlineSnapshot(
+    `"<PNPM_INNER>/babel-loader/lib/index.js"`,
+  );
+});
+
 test('should serialize pnpm global virtual store path (win32)', () => {
   const serializer = createSnapshotSerializer({
     root: 'D:\\user\\project',
@@ -45,5 +54,20 @@ test('should serialize pnpm global virtual store path (win32)', () => {
 
   expect(serializer.serialize(filePath)).toMatchInlineSnapshot(
     `"\\"<PNPM_INNER>/react/index.js\\""`,
+  );
+});
+
+test('should serialize pnpm global virtual store path with custom store dir (win32)', () => {
+  const serializer = createSnapshotSerializer({
+    features: {
+      transformWin32Path: true,
+    },
+  });
+
+  const filePath =
+    'D:\\.pnpm-store\\v11\\links\\@tailwindcss\\webpack\\4.3.3\\ec899805fefbf1ad652f8b65ed5d2e0d6fffbd615e2734cb7010eb00a7c4b15d\\node_modules\\@tailwindcss\\webpack\\dist\\index.js';
+
+  expect(serializer.serialize(filePath)).toMatchInlineSnapshot(
+    `"\\"<PNPM_INNER>/@tailwindcss/webpack/dist/index.js\\""`,
   );
 });
