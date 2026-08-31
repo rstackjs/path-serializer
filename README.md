@@ -148,7 +148,7 @@ Toggle individual features (all enabled by default):
 | `replaceRoot`                      | `true`  | `/foo/node_modules/.pnpm` → `<ROOT>/node_modules/.pnpm`                                                      |
 | `replaceWorkspaceWithFileProtocol` | `true`  | `file:///foo/packages/core/src` → `<WORKSPACE>/src`                                                          |
 | `replaceRootWithFileProtocol`      | `true`  | `file:///foo/node_modules/.pnpm` → `<ROOT>/node_modules/.pnpm`                                               |
-| `replacePnpmInner`                 | `true`  | Collapse pnpm's long `.pnpm/...` and global virtual store `pnpm/store/.../links/...` paths to `<PNPM_INNER>` |
+| `replacePnpmInner`                 | `true`  | Collapse pnpm's long `.pnpm/...` and global virtual store `<store-dir>/v*/links/...` paths to `<PNPM_INNER>` |
 | `replaceTmpDir`                    | `true`  | `os.tmpdir()` paths → `<TEMP>`                                                                               |
 | `replaceHomeDir`                   | `true`  | `os.homedir()` paths → `<HOME>`                                                                              |
 | `transformWin32Path`               | `true`  | Convert `D:\\foo\\bar` to `/d/foo/bar`                                                                       |
