@@ -2,4 +2,3 @@ enableGlobalVirtualStore: true
 
 allowBuilds:
   core-js: false
-  simple-git-hooks: false

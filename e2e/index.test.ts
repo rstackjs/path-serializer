@@ -1,6 +1,6 @@
 import { createRequire } from 'node:module';
 import path from 'node:path';
-import { expect, test } from '@rstest/core';
+import { expect, test } from 'rstack/test';
 import { createSnapshotSerializer } from 'path-serializer';
 
 const require = createRequire(import.meta.url);

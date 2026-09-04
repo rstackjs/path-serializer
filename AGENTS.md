@@ -4,9 +4,6 @@
 
 - Node.js via the repository CI matrix.
 - pnpm for dependency management.
-- Rslib builds dual ESM and CommonJS package output.
-- Rstest runs unit and package behavior tests.
-- Rslint and Prettier handle linting and formatting.
 
 ## Commands
 
@@ -15,7 +12,7 @@
 corepack enable && pnpm install
 
 # checks
-pnpm lint
+pnpm check
 pnpm test
 
 # build / package validation

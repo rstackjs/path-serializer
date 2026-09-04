@@ -35,33 +35,26 @@
     "LICENSE"
   ],
   "scripts": {
-    "build": "rslib build",
-    "dev": "rslib build --watch",
-    "lint": "rslint && prettier -c .",
-    "lint:write": "rslint --fix && prettier -w .",
-    "prepare": "simple-git-hooks && pnpm run build",
-    "test:watch": "rstest --watch",
-    "test": "rstest",
+    "build": "rs lib",
+    "bump": "pnpx bumpp",
+    "check": "rs check",
+    "dev": "rs lib -w",
+    "format": "rs fmt",
+    "lint": "rs lint",
+    "prepare": "rs hooks && pnpm run build",
     "prepublish": "pnpm run build",
-    "bump": "npx bumpp"
-  },
-  "simple-git-hooks": {
-    "pre-commit": "pnpm run lint:write"
+    "test": "rs test",
+    "test:watch": "rs test --watch"
   },
   "devDependencies": {
     "@microsoft/api-extractor": "^7.58.9",
-    "@rslib/core": "0.23.0",
-    "@rslint/core": "^0.6.2",
-    "@rstest/adapter-rslib": "0.10.6",
-    "@rstest/core": "0.10.6",
+    "@rslib/core": "~1.0.0",
     "@types/lodash-es": "^4.17.12",
     "@types/node": "^22.10.1",
-    "@typescript/native-preview": "7.0.0-dev.20260623.1",
     "lodash-es": "^4.17.21",
-    "prettier": "^3.8.4",
     "rsbuild-plugin-publint": "^1.0.0",
-    "simple-git-hooks": "^2.11.1",
-    "typescript": "^6.0.3",
+    "rstack": "^0.7.2",
+    "typescript": "^7.0.2",
     "upath": "^2.0.1"
   },
   "packageManager": "pnpm@12.1.0+sha512.d9b8276d97f6ec86e49815877f91ee9f63cee61f2063b304e43b6dab8fa07ce8a9afd46d2facd39f921e6a9d06b3c75a81349c7b888c2d22886bae0229901037",

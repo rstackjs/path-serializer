@@ -1,6 +1,6 @@
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
-import { expect, test } from '@rstest/core';
+import { expect, test } from 'rstack/test';
 import { createSnapshotSerializer } from 'path-serializer';
 
 test('should escapeEOL', async () => {
