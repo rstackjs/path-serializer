@@ -124,6 +124,18 @@ function _class_private_method_get(receiver, privateSet, fn) {
         "
   `);
   });
+
+  test('should preserve Windows file URLs', () => {
+    const input = 'file:///C:/serializer/project-old/src/a.ts';
+    expect(normalizeCodeToPosix(input)).toBe(input);
+  });
+
+  test('should normalize colored Windows paths', () => {
+    const input = '\u001b[32mC:\\serializer\\project\u001b[39m';
+    expect(normalizeCodeToPosix(input)).toBe(
+      '\u001b[32m/c/serializer/project\u001b[39m',
+    );
+  });
 });
 
 describe('normalizeCLR', () => {

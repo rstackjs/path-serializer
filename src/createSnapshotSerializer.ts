@@ -9,6 +9,7 @@ import {
 } from './normalize';
 import { replacePnpmInnerPath } from './pnpm';
 import type { PathMatcher, SnapshotSerializerOptions } from './types';
+import { compilePathMatcherRegExp } from './utils';
 
 export interface SnapshotSerializer {
   serialize: (val: unknown) => string;
@@ -63,6 +64,14 @@ export function createSnapshotSerializer(
     return pathMatchers;
   }
   const pathMatchers: PathMatcher[] = createPathMatchers();
+  const workspaceWithFileProtocol =
+    replaceWorkspaceWithFileProtocol && workspace
+      ? compilePathMatcherRegExp(pathToFileURL(workspace).toString())
+      : undefined;
+  const rootWithFileProtocol =
+    replaceRootWithFileProtocol && root
+      ? compilePathMatcherRegExp(pathToFileURL(root).toString())
+      : undefined;
 
   for (const matcher of pathMatchers) {
     if (typeof matcher.match === 'string') {
@@ -82,18 +91,12 @@ export function createSnapshotSerializer(
         replaced = beforeSerialize(replaced);
       }
 
-      if (replaceWorkspaceWithFileProtocol && workspace) {
-        // this is a polyfill for .replaceAll(string, string)
-        replaced = replaced
-          .split(pathToFileURL(workspace).toString())
-          .join('<WORKSPACE>');
+      if (workspaceWithFileProtocol) {
+        replaced = replaced.replace(workspaceWithFileProtocol, '<WORKSPACE>');
       }
 
-      if (replaceRootWithFileProtocol && root) {
-        // this is a polyfill for .replaceAll(string, string)
-        replaced = replaced
-          .split(pathToFileURL(root).toString())
-          .join('<ROOT>');
+      if (rootWithFileProtocol) {
+        replaced = replaced.replace(rootWithFileProtocol, '<ROOT>');
       }
 
       if (transformWin32Path) {
