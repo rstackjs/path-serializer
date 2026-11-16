@@ -409,7 +409,7 @@ describe('Windows path boundaries', () => {
   });
 });
 
-describe('configured paths with a trailing separator', () => {
+describe('root with a trailing separator', () => {
   const directory = path.resolve('/project/my project[app]');
   const inputPath = path.join(directory, 'src/a.ts');
   const serializer = createSnapshotSerializer({
@@ -419,12 +419,77 @@ describe('configured paths with a trailing separator', () => {
 
   test.each([
     {
+      input: directory,
+      output: '<ROOT>',
+    },
+    {
+      input: pathToFileURL(directory).toString(),
+      output: '<ROOT>',
+    },
+    {
+      input: `${directory}${path.sep}`,
+      output: '<ROOT>/',
+    },
+    {
+      input: pathToFileURL(`${directory}${path.sep}`).toString(),
+      output: '<ROOT>/',
+    },
+    {
       input: inputPath,
-      output: '<ROOT>src/a.ts',
+      output: '<ROOT>/src/a.ts',
     },
     {
       input: pathToFileURL(inputPath).toString(),
-      output: '<ROOT>src/a.ts',
+      output: '<ROOT>/src/a.ts',
+    },
+  ])('$input → $output', ({ input, output }) => {
+    expect(serializer.serialize(input)).toBe(output);
+  });
+});
+
+describe('workspace with a trailing separator', () => {
+  const root = path.resolve('/project');
+  const workspace = path.join(root, 'packages/core');
+  const serializer = createSnapshotSerializer({
+    root: `${root}${path.sep}`,
+    workspace: `${workspace}${path.sep}`,
+    features,
+  });
+
+  test.each([
+    {
+      input: workspace,
+      output: '<WORKSPACE>',
+    },
+    {
+      input: pathToFileURL(workspace).toString(),
+      output: '<WORKSPACE>',
+    },
+    {
+      input: `${workspace}${path.sep}`,
+      output: '<WORKSPACE>/',
+    },
+    {
+      input: pathToFileURL(`${workspace}${path.sep}`).toString(),
+      output: '<WORKSPACE>/',
+    },
+    {
+      input: path.join(workspace, 'src/a.ts'),
+      output: '<WORKSPACE>/src/a.ts',
+    },
+    {
+      input: pathToFileURL(path.join(workspace, 'src/a.ts')).toString(),
+      output: '<WORKSPACE>/src/a.ts',
+    },
+    {
+      input: path.join(root, 'packages/core-utils/src/a.ts'),
+      output: '<ROOT>/packages/core-utils/src/a.ts',
+    },
+    {
+      input: pathToFileURL(
+        path.join(root, 'packages/core-utils/src/a.ts'),
+      ).toString(),
+      output: '<ROOT>/packages/core-utils/src/a.ts',
     },
   ])('$input → $output', ({ input, output }) => {
     expect(serializer.serialize(input)).toBe(output);
