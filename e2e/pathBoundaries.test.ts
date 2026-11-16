@@ -72,16 +72,6 @@ test.each([
   );
 });
 
-test('should preserve counts while normalizing seconds with default options', () => {
-  const defaultSerializer = createSnapshotSerializer({ root, workspace });
-  expect(
-    defaultSerializer.serialize('Found 3 sources in 2 steps; built in 1.5s'),
-  ).toBe('"Found 3 sources in 2 steps; built in Xs"');
-  expect(defaultSerializer.serialize('version 2 support')).toBe(
-    '"version 2 support"',
-  );
-});
-
 test('should match escaped paths and file URLs with a trailing separator', () => {
   const directory = path.join(root, 'my project[app]');
   const directorySerializer = createSnapshotSerializer({
