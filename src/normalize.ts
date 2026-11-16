@@ -23,15 +23,21 @@ export const normalizeCodeToPosix = (code: string): string => {
 };
 
 export const normalizeCLR = (str: string): string => {
-  return (
-    str
-      .replace(/\u001b\[1m\u001b\[([0-9;]*)m/g, '<CLR=$1,BOLD>')
-      .replace(/\u001b\[1m/g, '<CLR=BOLD>')
-      .replace(/\u001b\[39m\u001b\[22m/g, '</CLR>')
-      .replace(/\u001b\[([0-9;]*)m/g, '<CLR=$1>')
-      // CHANGE: The time unit display in Rspack is second
-      // CHANGE2: avoid a bad case "./react/assets.svg" -> "./react/assetsXsvg"
-      // modified based on https://github.com/webpack/webpack/blob/001cab14692eb9a833c6b56709edbab547e291a1/test/StatsTestCases.basictest.js#L199
-      .replace(/[0-9]+(\.[0-9]+)*(<\/CLR>)?(\s?s)/g, 'X$2$3')
-  );
+  return str
+    .replace(/\u001b\[1m\u001b\[([0-9;]*)m/g, '<CLR=$1,BOLD>')
+    .replace(/\u001b\[1m/g, '<CLR=BOLD>')
+    .replace(/\u001b\[39m\u001b\[22m/g, '</CLR>')
+    .replace(/\u001b\[([0-9;]*)m/g, '<CLR=$1>');
+};
+
+export const normalizeTime = (str: string): string => {
+  // Preserve raw ANSI codes and normalized color markers between the value
+  // and unit so time normalization works independently of color normalization.
+  const unit = /(?:<\/CLR>|<CLR=[0-9;]*>|\u001b\[[0-9;]*m)*\s?s\b/y;
+  // Consume each number once, even when no time unit follows. Combining these
+  // patterns would retry the unit check at every digit of a long non-time value.
+  return str.replace(/[0-9]+(?:\.[0-9]+)*/g, (value, offset: number) => {
+    unit.lastIndex = offset + value.length;
+    return unit.test(str) ? 'X' : value;
+  });
 };
