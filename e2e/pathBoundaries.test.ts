@@ -3,11 +3,6 @@ import { pathToFileURL } from 'node:url';
 import { describe, expect, test } from 'rstack/test';
 import { createSnapshotSerializer } from 'path-serializer';
 
-interface TestCase {
-  input: string;
-  output: string;
-}
-
 const features = { addDoubleQuotes: false, escapeDoubleQuotes: false };
 
 describe('plain path boundaries', () => {
@@ -17,51 +12,176 @@ describe('plain path boundaries', () => {
     features,
   });
 
-  test.each<TestCase>`
-    input                                                    | output
-    ${'/project-old'}                                        | ${'/project-old'}
-    ${'/project-old/src/a.ts'}                               | ${'/project-old/src/a.ts'}
-    ${'/project/packages/core-old'}                          | ${'<ROOT>/packages/core-old'}
-    ${'/project/packages/core-old/src/a.ts'}                 | ${'<ROOT>/packages/core-old/src/a.ts'}
-    ${'/project.old'}                                        | ${'/project.old'}
-    ${'/project.old/src/a.ts'}                               | ${'/project.old/src/a.ts'}
-    ${'/project/packages/core.old'}                          | ${'<ROOT>/packages/core.old'}
-    ${'/project/packages/core.old/src/a.ts'}                 | ${'<ROOT>/packages/core.old/src/a.ts'}
-    ${'/project2'}                                           | ${'/project2'}
-    ${'/project2/src/a.ts'}                                  | ${'/project2/src/a.ts'}
-    ${'/project/packages/core2'}                             | ${'<ROOT>/packages/core2'}
-    ${'/project/packages/core2/src/a.ts'}                    | ${'<ROOT>/packages/core2/src/a.ts'}
-    ${'/project_old'}                                        | ${'/project_old'}
-    ${'/project_old/src/a.ts'}                               | ${'/project_old/src/a.ts'}
-    ${'/project/packages/core_old'}                          | ${'<ROOT>/packages/core_old'}
-    ${'/project/packages/core_old/src/a.ts'}                 | ${'<ROOT>/packages/core_old/src/a.ts'}
-    ${'/project+old'}                                        | ${'/project+old'}
-    ${'/project+old/src/a.ts'}                               | ${'/project+old/src/a.ts'}
-    ${'/project/packages/core+old'}                          | ${'<ROOT>/packages/core+old'}
-    ${'/project/packages/core+old/src/a.ts'}                 | ${'<ROOT>/packages/core+old/src/a.ts'}
-    ${'/project@old'}                                        | ${'/project@old'}
-    ${'/project@old/src/a.ts'}                               | ${'/project@old/src/a.ts'}
-    ${'/project/packages/core@old'}                          | ${'<ROOT>/packages/core@old'}
-    ${'/project/packages/core@old/src/a.ts'}                 | ${'<ROOT>/packages/core@old/src/a.ts'}
-    ${'/project中文'}                                        | ${'/project中文'}
-    ${'/project中文/src/a.ts'}                               | ${'/project中文/src/a.ts'}
-    ${'/project/packages/core中文'}                          | ${'<ROOT>/packages/core中文'}
-    ${'/project/packages/core中文/src/a.ts'}                 | ${'<ROOT>/packages/core中文/src/a.ts'}
-    ${'/project'}                                            | ${'<ROOT>'}
-    ${'/project/src/a.ts'}                                   | ${'<ROOT>/src/a.ts'}
-    ${'\'/project\' "/project"'}                             | ${'\'<ROOT>\' "<ROOT>"'}
-    ${'(/project:12:3)'}                                     | ${'(<ROOT>:12:3)'}
-    ${'[/project]'}                                          | ${'[<ROOT>]'}
-    ${'\u001b[32m/project\u001b[39m'}                        | ${'<CLR=32><ROOT><CLR=39>'}
-    ${'/project\n/project next'}                             | ${'<ROOT>\n<ROOT> next'}
-    ${'/project/packages/core'}                              | ${'<WORKSPACE>'}
-    ${'/project/packages/core/src/a.ts'}                     | ${'<WORKSPACE>/src/a.ts'}
-    ${'\'/project/packages/core\' "/project/packages/core"'} | ${'\'<WORKSPACE>\' "<WORKSPACE>"'}
-    ${'(/project/packages/core:12:3)'}                       | ${'(<WORKSPACE>:12:3)'}
-    ${'[/project/packages/core]'}                            | ${'[<WORKSPACE>]'}
-    ${'\u001b[32m/project/packages/core\u001b[39m'}          | ${'<CLR=32><WORKSPACE><CLR=39>'}
-    ${'/project/packages/core\n/project/packages/core next'} | ${'<WORKSPACE>\n<WORKSPACE> next'}
-  `('$input → $output', ({ input, output }) => {
+  test.each([
+    {
+      input: '/project-old',
+      output: '/project-old',
+    },
+    {
+      input: '/project-old/src/a.ts',
+      output: '/project-old/src/a.ts',
+    },
+    {
+      input: '/project/packages/core-old',
+      output: '<ROOT>/packages/core-old',
+    },
+    {
+      input: '/project/packages/core-old/src/a.ts',
+      output: '<ROOT>/packages/core-old/src/a.ts',
+    },
+    {
+      input: '/project.old',
+      output: '/project.old',
+    },
+    {
+      input: '/project.old/src/a.ts',
+      output: '/project.old/src/a.ts',
+    },
+    {
+      input: '/project/packages/core.old',
+      output: '<ROOT>/packages/core.old',
+    },
+    {
+      input: '/project/packages/core.old/src/a.ts',
+      output: '<ROOT>/packages/core.old/src/a.ts',
+    },
+    {
+      input: '/project2',
+      output: '/project2',
+    },
+    {
+      input: '/project2/src/a.ts',
+      output: '/project2/src/a.ts',
+    },
+    {
+      input: '/project/packages/core2',
+      output: '<ROOT>/packages/core2',
+    },
+    {
+      input: '/project/packages/core2/src/a.ts',
+      output: '<ROOT>/packages/core2/src/a.ts',
+    },
+    {
+      input: '/project_old',
+      output: '/project_old',
+    },
+    {
+      input: '/project_old/src/a.ts',
+      output: '/project_old/src/a.ts',
+    },
+    {
+      input: '/project/packages/core_old',
+      output: '<ROOT>/packages/core_old',
+    },
+    {
+      input: '/project/packages/core_old/src/a.ts',
+      output: '<ROOT>/packages/core_old/src/a.ts',
+    },
+    {
+      input: '/project+old',
+      output: '/project+old',
+    },
+    {
+      input: '/project+old/src/a.ts',
+      output: '/project+old/src/a.ts',
+    },
+    {
+      input: '/project/packages/core+old',
+      output: '<ROOT>/packages/core+old',
+    },
+    {
+      input: '/project/packages/core+old/src/a.ts',
+      output: '<ROOT>/packages/core+old/src/a.ts',
+    },
+    {
+      input: '/project@old',
+      output: '/project@old',
+    },
+    {
+      input: '/project@old/src/a.ts',
+      output: '/project@old/src/a.ts',
+    },
+    {
+      input: '/project/packages/core@old',
+      output: '<ROOT>/packages/core@old',
+    },
+    {
+      input: '/project/packages/core@old/src/a.ts',
+      output: '<ROOT>/packages/core@old/src/a.ts',
+    },
+    {
+      input: '/project中文',
+      output: '/project中文',
+    },
+    {
+      input: '/project中文/src/a.ts',
+      output: '/project中文/src/a.ts',
+    },
+    {
+      input: '/project/packages/core中文',
+      output: '<ROOT>/packages/core中文',
+    },
+    {
+      input: '/project/packages/core中文/src/a.ts',
+      output: '<ROOT>/packages/core中文/src/a.ts',
+    },
+    {
+      input: '/project',
+      output: '<ROOT>',
+    },
+    {
+      input: '/project/src/a.ts',
+      output: '<ROOT>/src/a.ts',
+    },
+    {
+      input: '\'/project\' "/project"',
+      output: '\'<ROOT>\' "<ROOT>"',
+    },
+    {
+      input: '(/project:12:3)',
+      output: '(<ROOT>:12:3)',
+    },
+    {
+      input: '[/project]',
+      output: '[<ROOT>]',
+    },
+    {
+      input: '\u001b[32m/project\u001b[39m',
+      output: '<CLR=32><ROOT><CLR=39>',
+    },
+    {
+      input: '/project\n/project next',
+      output: '<ROOT>\n<ROOT> next',
+    },
+    {
+      input: '/project/packages/core',
+      output: '<WORKSPACE>',
+    },
+    {
+      input: '/project/packages/core/src/a.ts',
+      output: '<WORKSPACE>/src/a.ts',
+    },
+    {
+      input: '\'/project/packages/core\' "/project/packages/core"',
+      output: '\'<WORKSPACE>\' "<WORKSPACE>"',
+    },
+    {
+      input: '(/project/packages/core:12:3)',
+      output: '(<WORKSPACE>:12:3)',
+    },
+    {
+      input: '[/project/packages/core]',
+      output: '[<WORKSPACE>]',
+    },
+    {
+      input: '\u001b[32m/project/packages/core\u001b[39m',
+      output: '<CLR=32><WORKSPACE><CLR=39>',
+    },
+    {
+      input: '/project/packages/core\n/project/packages/core next',
+      output: '<WORKSPACE>\n<WORKSPACE> next',
+    },
+  ])('$input → $output', ({ input, output }) => {
     expect(serializer.serialize(input)).toBe(output);
   });
 });
@@ -74,51 +194,176 @@ describe('file URL boundaries', () => {
   const workspaceURL = pathToFileURL(workspace).toString();
   const serializer = createSnapshotSerializer({ root, workspace, features });
 
-  test.each<TestCase>`
-    input                                           | output
-    ${`${rootURL}-old`}                             | ${`${rootURL}-old`}
-    ${`${rootURL}-old/src/a.ts`}                    | ${`${rootURL}-old/src/a.ts`}
-    ${`${workspaceURL}-old`}                        | ${'<ROOT>/packages/core-old'}
-    ${`${workspaceURL}-old/src/a.ts`}               | ${'<ROOT>/packages/core-old/src/a.ts'}
-    ${`${rootURL}.old`}                             | ${`${rootURL}.old`}
-    ${`${rootURL}.old/src/a.ts`}                    | ${`${rootURL}.old/src/a.ts`}
-    ${`${workspaceURL}.old`}                        | ${'<ROOT>/packages/core.old'}
-    ${`${workspaceURL}.old/src/a.ts`}               | ${'<ROOT>/packages/core.old/src/a.ts'}
-    ${`${rootURL}2`}                                | ${`${rootURL}2`}
-    ${`${rootURL}2/src/a.ts`}                       | ${`${rootURL}2/src/a.ts`}
-    ${`${workspaceURL}2`}                           | ${'<ROOT>/packages/core2'}
-    ${`${workspaceURL}2/src/a.ts`}                  | ${'<ROOT>/packages/core2/src/a.ts'}
-    ${`${rootURL}_old`}                             | ${`${rootURL}_old`}
-    ${`${rootURL}_old/src/a.ts`}                    | ${`${rootURL}_old/src/a.ts`}
-    ${`${workspaceURL}_old`}                        | ${'<ROOT>/packages/core_old'}
-    ${`${workspaceURL}_old/src/a.ts`}               | ${'<ROOT>/packages/core_old/src/a.ts'}
-    ${`${rootURL}+old`}                             | ${`${rootURL}+old`}
-    ${`${rootURL}+old/src/a.ts`}                    | ${`${rootURL}+old/src/a.ts`}
-    ${`${workspaceURL}+old`}                        | ${'<ROOT>/packages/core+old'}
-    ${`${workspaceURL}+old/src/a.ts`}               | ${'<ROOT>/packages/core+old/src/a.ts'}
-    ${`${rootURL}@old`}                             | ${`${rootURL}@old`}
-    ${`${rootURL}@old/src/a.ts`}                    | ${`${rootURL}@old/src/a.ts`}
-    ${`${workspaceURL}@old`}                        | ${'<ROOT>/packages/core@old'}
-    ${`${workspaceURL}@old/src/a.ts`}               | ${'<ROOT>/packages/core@old/src/a.ts'}
-    ${`${rootURL}%E4%B8%AD%E6%96%87`}               | ${`${rootURL}%E4%B8%AD%E6%96%87`}
-    ${`${rootURL}%E4%B8%AD%E6%96%87/src/a.ts`}      | ${`${rootURL}%E4%B8%AD%E6%96%87/src/a.ts`}
-    ${`${workspaceURL}%E4%B8%AD%E6%96%87`}          | ${'<ROOT>/packages/core%E4%B8%AD%E6%96%87'}
-    ${`${workspaceURL}%E4%B8%AD%E6%96%87/src/a.ts`} | ${'<ROOT>/packages/core%E4%B8%AD%E6%96%87/src/a.ts'}
-    ${rootURL}                                      | ${'<ROOT>'}
-    ${`${rootURL}/src/a.ts`}                        | ${'<ROOT>/src/a.ts'}
-    ${`'${rootURL}' "${rootURL}"`}                  | ${'\'<ROOT>\' "<ROOT>"'}
-    ${`(${rootURL}:12:3)`}                          | ${'(<ROOT>:12:3)'}
-    ${`[${rootURL}]`}                               | ${'[<ROOT>]'}
-    ${`\u001b[32m${rootURL}\u001b[39m`}             | ${'<CLR=32><ROOT><CLR=39>'}
-    ${`${rootURL}\n${rootURL} next`}                | ${'<ROOT>\n<ROOT> next'}
-    ${workspaceURL}                                 | ${'<WORKSPACE>'}
-    ${`${workspaceURL}/src/a.ts`}                   | ${'<WORKSPACE>/src/a.ts'}
-    ${`'${workspaceURL}' "${workspaceURL}"`}        | ${'\'<WORKSPACE>\' "<WORKSPACE>"'}
-    ${`(${workspaceURL}:12:3)`}                     | ${'(<WORKSPACE>:12:3)'}
-    ${`[${workspaceURL}]`}                          | ${'[<WORKSPACE>]'}
-    ${`\u001b[32m${workspaceURL}\u001b[39m`}        | ${'<CLR=32><WORKSPACE><CLR=39>'}
-    ${`${workspaceURL}\n${workspaceURL} next`}      | ${'<WORKSPACE>\n<WORKSPACE> next'}
-  `('$input → $output', ({ input, output }) => {
+  test.each([
+    {
+      input: `${rootURL}-old`,
+      output: `${rootURL}-old`,
+    },
+    {
+      input: `${rootURL}-old/src/a.ts`,
+      output: `${rootURL}-old/src/a.ts`,
+    },
+    {
+      input: `${workspaceURL}-old`,
+      output: '<ROOT>/packages/core-old',
+    },
+    {
+      input: `${workspaceURL}-old/src/a.ts`,
+      output: '<ROOT>/packages/core-old/src/a.ts',
+    },
+    {
+      input: `${rootURL}.old`,
+      output: `${rootURL}.old`,
+    },
+    {
+      input: `${rootURL}.old/src/a.ts`,
+      output: `${rootURL}.old/src/a.ts`,
+    },
+    {
+      input: `${workspaceURL}.old`,
+      output: '<ROOT>/packages/core.old',
+    },
+    {
+      input: `${workspaceURL}.old/src/a.ts`,
+      output: '<ROOT>/packages/core.old/src/a.ts',
+    },
+    {
+      input: `${rootURL}2`,
+      output: `${rootURL}2`,
+    },
+    {
+      input: `${rootURL}2/src/a.ts`,
+      output: `${rootURL}2/src/a.ts`,
+    },
+    {
+      input: `${workspaceURL}2`,
+      output: '<ROOT>/packages/core2',
+    },
+    {
+      input: `${workspaceURL}2/src/a.ts`,
+      output: '<ROOT>/packages/core2/src/a.ts',
+    },
+    {
+      input: `${rootURL}_old`,
+      output: `${rootURL}_old`,
+    },
+    {
+      input: `${rootURL}_old/src/a.ts`,
+      output: `${rootURL}_old/src/a.ts`,
+    },
+    {
+      input: `${workspaceURL}_old`,
+      output: '<ROOT>/packages/core_old',
+    },
+    {
+      input: `${workspaceURL}_old/src/a.ts`,
+      output: '<ROOT>/packages/core_old/src/a.ts',
+    },
+    {
+      input: `${rootURL}+old`,
+      output: `${rootURL}+old`,
+    },
+    {
+      input: `${rootURL}+old/src/a.ts`,
+      output: `${rootURL}+old/src/a.ts`,
+    },
+    {
+      input: `${workspaceURL}+old`,
+      output: '<ROOT>/packages/core+old',
+    },
+    {
+      input: `${workspaceURL}+old/src/a.ts`,
+      output: '<ROOT>/packages/core+old/src/a.ts',
+    },
+    {
+      input: `${rootURL}@old`,
+      output: `${rootURL}@old`,
+    },
+    {
+      input: `${rootURL}@old/src/a.ts`,
+      output: `${rootURL}@old/src/a.ts`,
+    },
+    {
+      input: `${workspaceURL}@old`,
+      output: '<ROOT>/packages/core@old',
+    },
+    {
+      input: `${workspaceURL}@old/src/a.ts`,
+      output: '<ROOT>/packages/core@old/src/a.ts',
+    },
+    {
+      input: `${rootURL}%E4%B8%AD%E6%96%87`,
+      output: `${rootURL}%E4%B8%AD%E6%96%87`,
+    },
+    {
+      input: `${rootURL}%E4%B8%AD%E6%96%87/src/a.ts`,
+      output: `${rootURL}%E4%B8%AD%E6%96%87/src/a.ts`,
+    },
+    {
+      input: `${workspaceURL}%E4%B8%AD%E6%96%87`,
+      output: '<ROOT>/packages/core%E4%B8%AD%E6%96%87',
+    },
+    {
+      input: `${workspaceURL}%E4%B8%AD%E6%96%87/src/a.ts`,
+      output: '<ROOT>/packages/core%E4%B8%AD%E6%96%87/src/a.ts',
+    },
+    {
+      input: rootURL,
+      output: '<ROOT>',
+    },
+    {
+      input: `${rootURL}/src/a.ts`,
+      output: '<ROOT>/src/a.ts',
+    },
+    {
+      input: `'${rootURL}' "${rootURL}"`,
+      output: '\'<ROOT>\' "<ROOT>"',
+    },
+    {
+      input: `(${rootURL}:12:3)`,
+      output: '(<ROOT>:12:3)',
+    },
+    {
+      input: `[${rootURL}]`,
+      output: '[<ROOT>]',
+    },
+    {
+      input: `\u001b[32m${rootURL}\u001b[39m`,
+      output: '<CLR=32><ROOT><CLR=39>',
+    },
+    {
+      input: `${rootURL}\n${rootURL} next`,
+      output: '<ROOT>\n<ROOT> next',
+    },
+    {
+      input: workspaceURL,
+      output: '<WORKSPACE>',
+    },
+    {
+      input: `${workspaceURL}/src/a.ts`,
+      output: '<WORKSPACE>/src/a.ts',
+    },
+    {
+      input: `'${workspaceURL}' "${workspaceURL}"`,
+      output: '\'<WORKSPACE>\' "<WORKSPACE>"',
+    },
+    {
+      input: `(${workspaceURL}:12:3)`,
+      output: '(<WORKSPACE>:12:3)',
+    },
+    {
+      input: `[${workspaceURL}]`,
+      output: '[<WORKSPACE>]',
+    },
+    {
+      input: `\u001b[32m${workspaceURL}\u001b[39m`,
+      output: '<CLR=32><WORKSPACE><CLR=39>',
+    },
+    {
+      input: `${workspaceURL}\n${workspaceURL} next`,
+      output: '<WORKSPACE>\n<WORKSPACE> next',
+    },
+  ])('$input → $output', ({ input, output }) => {
     expect(serializer.serialize(input)).toBe(output);
   });
 });
@@ -130,16 +375,36 @@ describe('Windows path boundaries', () => {
     features,
   });
 
-  test.each<TestCase>`
-    input                                             | output
-    ${'C:\\project'}                                  | ${'<ROOT>'}
-    ${'C:\\project\\src\\a.ts'}                       | ${'<ROOT>/src/a.ts'}
-    ${'C:\\project-old\\src\\a.ts'}                   | ${'/c/project-old/src/a.ts'}
-    ${'C:\\project.old\\src\\a.ts'}                   | ${'/c/project.old/src/a.ts'}
-    ${'C:\\project\\packages\\core'}                  | ${'<WORKSPACE>'}
-    ${'C:\\project\\packages\\core-utils\\src\\a.ts'} | ${'<ROOT>/packages/core-utils/src/a.ts'}
-    ${'\u001b[32mC:\\project\u001b[39m'}              | ${'<CLR=32><ROOT><CLR=39>'}
-  `('$input → $output', ({ input, output }) => {
+  test.each([
+    {
+      input: 'C:\\project',
+      output: '<ROOT>',
+    },
+    {
+      input: 'C:\\project\\src\\a.ts',
+      output: '<ROOT>/src/a.ts',
+    },
+    {
+      input: 'C:\\project-old\\src\\a.ts',
+      output: '/c/project-old/src/a.ts',
+    },
+    {
+      input: 'C:\\project.old\\src\\a.ts',
+      output: '/c/project.old/src/a.ts',
+    },
+    {
+      input: 'C:\\project\\packages\\core',
+      output: '<WORKSPACE>',
+    },
+    {
+      input: 'C:\\project\\packages\\core-utils\\src\\a.ts',
+      output: '<ROOT>/packages/core-utils/src/a.ts',
+    },
+    {
+      input: '\u001b[32mC:\\project\u001b[39m',
+      output: '<CLR=32><ROOT><CLR=39>',
+    },
+  ])('$input → $output', ({ input, output }) => {
     expect(serializer.serialize(input)).toBe(output);
   });
 });
@@ -152,11 +417,16 @@ describe('configured paths with a trailing separator', () => {
     features,
   });
 
-  test.each<TestCase>`
-    input                                  | output
-    ${inputPath}                           | ${'<ROOT>src/a.ts'}
-    ${pathToFileURL(inputPath).toString()} | ${'<ROOT>src/a.ts'}
-  `('$input → $output', ({ input, output }) => {
+  test.each([
+    {
+      input: inputPath,
+      output: '<ROOT>src/a.ts',
+    },
+    {
+      input: pathToFileURL(inputPath).toString(),
+      output: '<ROOT>src/a.ts',
+    },
+  ])('$input → $output', ({ input, output }) => {
     expect(serializer.serialize(input)).toBe(output);
   });
 });
