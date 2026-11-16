@@ -153,11 +153,19 @@ Toggle individual features (all enabled by default):
 | `replaceHomeDir`                   | `true`  | `os.homedir()` paths → `<HOME>`                                                                              |
 | `transformWin32Path`               | `true`  | Convert `D:\\foo\\bar` to `/d/foo/bar`                                                                       |
 | `transformCLR`                     | `true`  | Normalize ANSI color escape codes                                                                            |
+| `normalizeTime`                    | `true`  | Normalize durations in seconds: `1.5s` → `Xs`, `12 s` → `X s`                                                |
 | `escapeDoubleQuotes`               | `true`  | Escape `"` to `\"`                                                                                           |
 | `escapeEOL`                        | `true`  | Normalize `\r\n` to `\n`                                                                                     |
 | `addDoubleQuotes`                  | `true`  | Wrap output in double quotes                                                                                 |
 
 More details can be found in [./src/types.ts](https://github.com/rspack-contrib/path-serializer/blob/main/src/types.ts).
+
+`normalizeTime` and `transformCLR` are independent. To preserve timing values
+while normalizing colors, set `features: { normalizeTime: false }`. Time
+normalization currently supports seconds (`s`); milliseconds (`ms`) stay unchanged.
+
+Previously, disabling `transformCLR` also disabled time normalization. To keep
+both disabled, set `features: { transformCLR: false, normalizeTime: false }`.
 
 ## Showcases
 

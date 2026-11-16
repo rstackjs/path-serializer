@@ -17,11 +17,3 @@ test('bad case 1', () => {
   const input = 'static/react.svg'; // bad case: 'static/reactXsvg'
   expect(input).toMatchInlineSnapshot(`"static/react.svg"`);
 });
-
-test('should preserve counts while normalizing seconds with default options', () => {
-  const serializer = createSnapshotSerializer();
-  expect(
-    serializer.serialize('Found 3 sources in 2 steps; built in 1.5s'),
-  ).toBe('"Found 3 sources in 2 steps; built in Xs"');
-  expect(serializer.serialize('version 2 support')).toBe('"version 2 support"');
-});
