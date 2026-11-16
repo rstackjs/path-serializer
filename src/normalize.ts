@@ -33,8 +33,11 @@ export const normalizeCLR = (str: string): string => {
 export const normalizeTime = (str: string): string => {
   // Preserve raw ANSI codes and normalized color markers between the value
   // and unit so time normalization works independently of color normalization.
-  return str.replace(
-    /[0-9]+(?:\.[0-9]+)*((?:<\/CLR>|<CLR=[0-9;]*>|\u001b\[[0-9;]*m)*)(\s?s)\b/g,
-    'X$1$2',
-  );
+  const unit = /(?:<\/CLR>|<CLR=[0-9;]*>|\u001b\[[0-9;]*m)*\s?s\b/y;
+  // Consume each number once, even when no time unit follows. Combining these
+  // patterns would retry the unit check at every digit of a long non-time value.
+  return str.replace(/[0-9]+(?:\.[0-9]+)*/g, (value, offset: number) => {
+    unit.lastIndex = offset + value.length;
+    return unit.test(str) ? 'X' : value;
+  });
 };

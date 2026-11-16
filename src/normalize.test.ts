@@ -142,6 +142,12 @@ describe('normalizeCLR', () => {
 });
 
 describe('normalizeTime', () => {
+  test('should preserve long numeric strings without time units', () => {
+    for (const input of ['0'.repeat(50_000), '0.'.repeat(25_000)]) {
+      expect(normalizeTime(input)).toBe(input);
+    }
+  });
+
   test.each([
     ['<CLR=33,BOLD>1.5</CLR> s', '<CLR=33,BOLD>X</CLR> s'],
     ['<CLR=33>1.5<CLR=39> s', '<CLR=33>X<CLR=39> s'],
