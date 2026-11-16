@@ -19,7 +19,12 @@ export function compilePathMatcherRegExp(match: string | RegExp): RegExp {
     return match;
   }
   const escaped = escapeRegExp(match);
-  return new RegExp(`(?<=\\W|^)${escaped}(?=\\W|$)`, 'g');
+  // Match separators and common log delimiters, not sibling names such as
+  // "project-old" or "project.old". A trailing slash already marks a boundary.
+  const boundary = match.endsWith('/')
+    ? ''
+    : String.raw`(?=[/\s"'\x60)\]}:?#,;<>]|$)`;
+  return new RegExp(`(?<=\\W|^)${escaped}${boundary}`, 'g');
 }
 
 export function splitPathString(str: string): string[] {
