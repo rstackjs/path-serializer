@@ -23,8 +23,8 @@ export function compilePathMatcherRegExp(match: string | RegExp): RegExp {
   // "project-old" or "project.old". A trailing slash already marks a boundary.
   const boundary = match.endsWith('/')
     ? ''
-    : String.raw`(?=[/\s"'\x60)\]}:?#,;<>]|$)`;
-  return new RegExp(`(?<=\\W|^)${escaped}${boundary}`, 'g');
+    : String.raw`(?=[/\s"'\x60)\]}:?#,;<>\x1b]|$)`;
+  return new RegExp(`(?<=\\W|^|\\x1b\\[[0-9;]*m)${escaped}${boundary}`, 'g');
 }
 
 export function splitPathString(str: string): string[] {

@@ -64,6 +64,9 @@ test.each([
   );
   expect(serializer.serialize(`(${input}:12:3)`)).toBe(`(${mark}:12:3)`);
   expect(serializer.serialize(`[${input}]`)).toBe(`[${mark}]`);
+  expect(serializer.serialize(`\u001b[32m${input}\u001b[39m`)).toBe(
+    `<CLR=32>${mark}<CLR=39>`,
+  );
   expect(serializer.serialize(`${input}\n${input} next`)).toBe(
     `${mark}\n${mark} next`,
   );
