@@ -30,7 +30,7 @@ export const normalizeCLR = (str: string): string => {
     .replace(/\u001b\[([0-9;]*)m/g, '<CLR=$1>');
 };
 
-export const normalizeTime = (str: string): string => {
+export const replaceDuration = (str: string): string => {
   // Preserve raw ANSI codes and normalized color markers between the value
   // and unit so time normalization works independently of color normalization.
   const unit = /(?:<\/CLR>|<CLR=[0-9;]*>|\u001b\[[0-9;]*m)*\s?s\b/y;

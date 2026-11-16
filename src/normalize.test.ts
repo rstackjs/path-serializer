@@ -3,7 +3,7 @@ import {
   normalizeCLR,
   normalizeCodeToPosix,
   normalizePathToPosix,
-  normalizeTime,
+  replaceDuration,
 } from './normalize';
 
 describe('normalizePathToPosix', () => {
@@ -141,10 +141,10 @@ describe('normalizeCLR', () => {
   });
 });
 
-describe('normalizeTime', () => {
+describe('replaceDuration', () => {
   test('should preserve long numeric strings without time units', () => {
     for (const input of ['0'.repeat(50_000), '0.'.repeat(25_000)]) {
-      expect(normalizeTime(input)).toBe(input);
+      expect(replaceDuration(input)).toBe(input);
     }
   });
 
@@ -155,7 +155,7 @@ describe('normalizeTime', () => {
     ['built in 1500 ms', 'built in 1500 ms'],
     ['received 3 msgs', 'received 3 msgs'],
   ])('should preserve units and color markers in %s', (input, expected) => {
-    expect(normalizeTime(input)).toBe(expected);
+    expect(replaceDuration(input)).toBe(expected);
   });
 
   test('should replace time values with "X" followed by time unit', () => {
@@ -201,7 +201,7 @@ describe('normalizeTime', () => {
     ];
 
     for (const { input, expected } of testCases) {
-      expect(normalizeTime(input)).toBe(expected);
+      expect(replaceDuration(input)).toBe(expected);
     }
   });
 
@@ -246,7 +246,7 @@ describe('normalizeTime', () => {
     ];
 
     for (const { input, expected } of testCases) {
-      expect(normalizeTime(input)).toBe(expected);
+      expect(replaceDuration(input)).toBe(expected);
     }
   });
 });
