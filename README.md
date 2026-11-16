@@ -160,13 +160,6 @@ Toggle individual features (all enabled by default):
 
 More details can be found in [./src/types.ts](https://github.com/rspack-contrib/path-serializer/blob/main/src/types.ts).
 
-`normalizeTime` and `transformCLR` are independent. To preserve timing values
-while normalizing colors, set `features: { normalizeTime: false }`. Time
-normalization currently supports seconds (`s`); milliseconds (`ms`) stay unchanged.
-
-Previously, disabling `transformCLR` also disabled time normalization. To keep
-both disabled, set `features: { transformCLR: false, normalizeTime: false }`.
-
 ## Showcases
 
 - [Rslib](https://github.com/web-infra-dev/rslib/blob/3ff6859eb38171c731e447a1364afc021f8c501a/tests/setupVitestTests.ts)
