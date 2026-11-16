@@ -153,6 +153,7 @@ Toggle individual features (all enabled by default):
 | `replaceHomeDir`                   | `true`  | `os.homedir()` paths → `<HOME>`                                                                              |
 | `transformWin32Path`               | `true`  | Convert `D:\\foo\\bar` to `/d/foo/bar`                                                                       |
 | `transformCLR`                     | `true`  | Normalize ANSI color escape codes                                                                            |
+| `replaceDuration`                  | `true`  | Replace durations in seconds: `1.5s` → `Xs`, `12 s` → `X s`                                                  |
 | `escapeDoubleQuotes`               | `true`  | Escape `"` to `\"`                                                                                           |
 | `escapeEOL`                        | `true`  | Normalize `\r\n` to `\n`                                                                                     |
 | `addDoubleQuotes`                  | `true`  | Wrap output in double quotes                                                                                 |

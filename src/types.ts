@@ -60,6 +60,12 @@ export interface Features {
    */
   transformCLR?: boolean;
   /**
+   * `built in 1.5s` -> `built in Xs`
+   * Replace durations in seconds independently of `transformCLR`.
+   * @default true
+   */
+  replaceDuration?: boolean;
+  /**
    * `""` -> `\"\"`
    * @default true
    */

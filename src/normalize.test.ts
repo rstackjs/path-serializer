@@ -3,6 +3,7 @@ import {
   normalizeCLR,
   normalizeCodeToPosix,
   normalizePathToPosix,
+  replaceDuration,
 } from './normalize';
 
 describe('normalizePathToPosix', () => {
@@ -144,6 +145,31 @@ describe('normalizeCLR', () => {
     expect(normalizeCLR(input)).toBe(expected);
   });
 
+  test('should preserve time values', () => {
+    expect(normalizeCLR('built in 1.5s')).toBe('built in 1.5s');
+    expect(normalizeCLR('\u001b[33m1.5s\u001b[39m')).toBe(
+      '<CLR=33>1.5s<CLR=39>',
+    );
+  });
+});
+
+describe('replaceDuration', () => {
+  test('should preserve long numeric strings without time units', () => {
+    for (const input of ['0'.repeat(50_000), '0.'.repeat(25_000)]) {
+      expect(replaceDuration(input)).toBe(input);
+    }
+  });
+
+  test.each([
+    ['<CLR=33,BOLD>1.5</CLR> s', '<CLR=33,BOLD>X</CLR> s'],
+    ['<CLR=33>1.5<CLR=39> s', '<CLR=33>X<CLR=39> s'],
+    ['\u001b[33m1.5\u001b[39m s', '\u001b[33mX\u001b[39m s'],
+    ['built in 1500 ms', 'built in 1500 ms'],
+    ['received 3 msgs', 'received 3 msgs'],
+  ])('should preserve units and color markers in %s', (input, expected) => {
+    expect(replaceDuration(input)).toBe(expected);
+  });
+
   test('should replace time values with "X" followed by time unit', () => {
     const testCases = [
       {
@@ -159,8 +185,16 @@ describe('normalizeCLR', () => {
         expected: 'X s',
       },
       {
+        input: 'built 12 assets in 1.5s',
+        expected: 'built 12 assets in Xs',
+      },
+      {
+        input: '\u001b[1m\u001b[33m1.5\u001b[39m\u001b[22m s',
+        expected: '\u001b[1m\u001b[33mX\u001b[39m\u001b[22m s',
+      },
+      {
         input: '\u001b[33m5.678s\u001b[39m',
-        expected: '<CLR=33>Xs<CLR=39>',
+        expected: '\u001b[33mXs\u001b[39m',
       },
       {
         input: 'Time: 123.456s',
@@ -174,12 +208,12 @@ describe('normalizeCLR', () => {
       // 测试带有颜色的多个时间值
       {
         input: '\u001b[33m2.5s\u001b[39m and \u001b[32m1.8s\u001b[39m',
-        expected: '<CLR=33>Xs<CLR=39> and <CLR=32>Xs<CLR=39>',
+        expected: '\u001b[33mXs\u001b[39m and \u001b[32mXs\u001b[39m',
       },
     ];
 
     for (const { input, expected } of testCases) {
-      expect(normalizeCLR(input)).toMatch(expected);
+      expect(replaceDuration(input)).toBe(expected);
     }
   });
 
@@ -192,6 +226,22 @@ describe('normalizeCLR', () => {
       {
         input: '123px',
         expected: '123px',
+      },
+      {
+        input: 'Found 3 sources in 2 steps',
+        expected: 'Found 3 sources in 2 steps',
+      },
+      {
+        input: 'version 2 support',
+        expected: 'version 2 support',
+      },
+      {
+        input: '3sources and 2steps',
+        expected: '3sources and 2steps',
+      },
+      {
+        input: '\u001b[1m\u001b[33m3\u001b[39m\u001b[22m sources',
+        expected: '\u001b[1m\u001b[33m3\u001b[39m\u001b[22m sources',
       },
       {
         input: 'version 1.2.3',
@@ -208,7 +258,7 @@ describe('normalizeCLR', () => {
     ];
 
     for (const { input, expected } of testCases) {
-      expect(normalizeCLR(input)).toBe(expected);
+      expect(replaceDuration(input)).toBe(expected);
     }
   });
 });
