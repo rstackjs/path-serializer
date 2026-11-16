@@ -5,7 +5,7 @@ import {
   normalizeCLR,
   normalizeCodeToPosix,
   normalizePathToPosix,
-  normalizeTime,
+  replaceDuration,
 } from './normalize';
 import { replacePnpmInnerPath } from './pnpm';
 import type { PathMatcher, SnapshotSerializerOptions } from './types';
@@ -41,7 +41,7 @@ export function createSnapshotSerializer(
     escapeDoubleQuotes = true,
     escapeEOL = true,
     transformCLR = true,
-    normalizeTime: normalizeTimeEnabled = true,
+    replaceDuration: replaceDurationEnabled = true,
   } = features;
 
   function createPathMatchers(): PathMatcher[] {
@@ -110,8 +110,8 @@ export function createSnapshotSerializer(
         replaced = normalizeCLR(replaced);
       }
 
-      if (normalizeTimeEnabled) {
-        replaced = normalizeTime(replaced);
+      if (replaceDurationEnabled) {
+        replaced = replaceDuration(replaced);
       }
 
       if (escapeDoubleQuotes) {

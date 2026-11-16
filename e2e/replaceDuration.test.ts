@@ -8,15 +8,15 @@ test.each([
   [false, false, '\u001b[1m\u001b[33m1.5\u001b[39m\u001b[22m s'],
 ] as const)(
   'should independently control color (%s) and time (%s) normalization',
-  (transformCLR, normalizeTime, expected) => {
+  (transformCLR, replaceDuration, expected) => {
     const serializer = createSnapshotSerializer({
-      features: { transformCLR, normalizeTime, addDoubleQuotes: false },
+      features: { transformCLR, replaceDuration, addDoubleQuotes: false },
     });
     expect(
       serializer.serialize('\u001b[1m\u001b[33m1.5\u001b[39m\u001b[22m s'),
     ).toBe(expected);
     expect(serializer.serialize('built in 1.5s')).toBe(
-      normalizeTime ? 'built in Xs' : 'built in 1.5s',
+      replaceDuration ? 'built in Xs' : 'built in 1.5s',
     );
   },
 );
