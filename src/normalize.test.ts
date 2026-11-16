@@ -147,6 +147,14 @@ describe('normalizeCLR', () => {
         expected: 'X s',
       },
       {
+        input: 'built 12 assets in 1.5s',
+        expected: 'built 12 assets in Xs',
+      },
+      {
+        input: '\u001b[1m\u001b[33m1.5\u001b[39m\u001b[22m s',
+        expected: '<CLR=33,BOLD>X</CLR> s',
+      },
+      {
         input: '\u001b[33m5.678s\u001b[39m',
         expected: '<CLR=33>Xs<CLR=39>',
       },
@@ -180,6 +188,22 @@ describe('normalizeCLR', () => {
       {
         input: '123px',
         expected: '123px',
+      },
+      {
+        input: 'Found 3 sources in 2 steps',
+        expected: 'Found 3 sources in 2 steps',
+      },
+      {
+        input: 'version 2 support',
+        expected: 'version 2 support',
+      },
+      {
+        input: '3sources and 2steps',
+        expected: '3sources and 2steps',
+      },
+      {
+        input: '\u001b[1m\u001b[33m3\u001b[39m\u001b[22m sources',
+        expected: '<CLR=33,BOLD>3</CLR> sources',
       },
       {
         input: 'version 1.2.3',
