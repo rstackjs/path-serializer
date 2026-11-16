@@ -39,7 +39,6 @@ jobs:
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: ${{ matrix.node-version }}
-          # Restored global-store links cause EPERM on Windows; install afresh.
 
       - name: Install Dependencies
         run: pnpm install
