@@ -53,11 +53,11 @@
     "@types/node": "^22.10.1",
     "lodash-es": "^4.17.21",
     "rsbuild-plugin-publint": "^1.0.0",
-    "rstack": "^0.7.2",
+    "rstack": "^0.9.5",
     "typescript": "^7.0.2",
     "upath": "^2.0.1"
   },
-  "packageManager": "pnpm@12.1.0+sha512.d9b8276d97f6ec86e49815877f91ee9f63cee61f2063b304e43b6dab8fa07ce8a9afd46d2facd39f921e6a9d06b3c75a81349c7b888c2d22886bae0229901037",
+  "packageManager": "pnpm@12.18.0+sha512.9d7882d5dc82147ecfc4e062aa34834e0ad0296710a1837a1115ae012127d36b7109e321ac1598a1dd0a65597681b1e99917e12ed0d749eae91187943363beb3",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
